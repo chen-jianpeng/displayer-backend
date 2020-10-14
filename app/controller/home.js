@@ -1,7 +1,7 @@
 'use strict';
 
-const jsonwebtoken = require('jsonwebtoken');
 const Controller = require('egg').Controller;
+const getToken = require('../utils/getToken');
 
 class HomeController extends Controller {
   async index() {
@@ -11,14 +11,13 @@ class HomeController extends Controller {
 
   async login() {
     const { ctx } = this;
-    const secret = 'secert';
-    const token = jsonwebtoken.sign({ key: 'value' }, secret, { expiresIn: '1d' });
+    const token = getToken({ key: 'value' });
     ctx.body = { token };
   }
 
   async needLogin() {
     const { ctx } = this;
-    ctx.body = {code: 0, message:'验证通过'};
+    ctx.body = { code: 0, message: '验证通过' };
   }
 }
 
