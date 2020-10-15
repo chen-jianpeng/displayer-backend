@@ -18,6 +18,28 @@ module.exports = appInfo => {
   // add your middleware config here
   config.middleware = [ ];
 
+  config.redis = {
+    client: {
+      port: 6379,
+      host: '10.88.190.203',
+      password: '',
+      db: 0,
+    },
+  };
+
+  config.mongoose = {
+    client: {
+      url: 'mongodb://10.88.190.203/displayer-backend',
+      options: { useUnifiedTopology: true },
+    },
+  };
+
+  config.security = {
+    csrf: {
+      ignore: '/api/*/*',
+    },
+  };
+
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',

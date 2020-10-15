@@ -14,3 +14,10 @@ module.exports = function getToken(data) {
     algorithm: 'RS256',
   });
 };
+
+module.exports = function Token(data) {
+  return jsonwebtoken.sign(data, secret, {
+    expiresIn: '1d',
+    algorithm: 'RS256',
+  });
+};
