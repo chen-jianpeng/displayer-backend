@@ -12,19 +12,22 @@ const secret = fs.readFileSync(
 
 class UserController extends Controller {
   async signin() {
-    const { ctx, service } = this;
+    const { ctx, app, service } = this;
     const { loginname, pass } = ctx.request.body;
-    const user = await service.user.getUserByLoginName(loginname);
-    console.log('user: ', user);
-    const valid = ctx.helper.bcompare(pass, user.pass);
+    const user = await service.user.getUserByLoginName(loginname).lean();
+    const valid = user && ctx.helper.bcompare(pass, user.pass);
 
-    if (user && valid) {
+    if (valid) {
       const token = jsonwebtoken.sign({ loginname: user.loginname, id: user._id }, secret, {
         expiresIn: '1d',
         algorithm: 'RS256',
       });
+      delete user.pass;
+      user.token = token;
 
-      ctx.body = { code: 0, data: { user, token } };
+      await app.redis.set(token, user);
+
+      ctx.body = { code: 0, data: user };
     } else {
       ctx.body = { code: 1, message: '用户名或密码错误', data: {} };
     }
@@ -78,10 +81,12 @@ class UserController extends Controller {
   }
 
   async needLogin() {
-    const { ctx } = this;
+    const { ctx, app, token } = this;
 
-    // await app.redis.set('foo', 'redis链接成功');
-    // const foo = await app.redis.get('foo');
+    const user = await app.redis.get(token);
+    if (user) {
+      app.redis.set(token, user);
+    }
 
     ctx.body = { code: 0, message: '验证通过', data: {} };
   }

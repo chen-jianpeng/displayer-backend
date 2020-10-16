@@ -18,7 +18,7 @@ class UserService extends Service {
    */
   getUserByLoginName(loginName) {
     const query = { loginname: new RegExp('^' + loginName + '$', 'i') };
-    return this.ctx.model.User.findOne(query).exec();
+    return this.ctx.model.User.findOne(query);
   }
 
   /**
