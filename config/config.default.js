@@ -12,11 +12,18 @@ module.exports = appInfo => {
    **/
   const config = exports = {};
 
+  config.name = '电子班牌信息发布系统';
+
+  config.host = 'http://10.88.190.203';
+
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1602572274954_7520';
 
+  // token过期时间
+  config.token_expire = 24 * 60 * 60;
+
   // add your middleware config here
-  config.middleware = [ ];
+  config.middleware = [ 'errorHandler' ];
 
   config.redis = {
     client: {
@@ -32,6 +39,18 @@ module.exports = appInfo => {
       url: 'mongodb://10.88.190.203/displayer-backend',
       options: { useUnifiedTopology: true },
     },
+  };
+
+  // 邮箱配置
+  config.mail_opts = {
+    host: 'smtp.163.com',
+    secure: true,
+    port: 465,
+    auth: {
+      user: 'chenjpok@163.com',
+      pass: 'Chen54861964',
+    },
+    ignoreTLS: true,
   };
 
   config.security = {
