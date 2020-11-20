@@ -57,6 +57,7 @@ module.exports = appInfo => {
     csrf: {
       ignore: '/api/*/*',
     },
+    domainWhiteList: [ 'http://192.168.124.17:8080' ],
   };
 
   // add your user config here

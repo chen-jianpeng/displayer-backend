@@ -29,7 +29,11 @@ module.exports = () => {
       return;
     }
 
-    ctx.request.user = user;
+    try {
+      ctx.request.user = JSON.parse(user);
+    } catch (error) {
+      ctx.request.user = {};
+    }
 
     await next();
   };

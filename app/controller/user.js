@@ -29,7 +29,7 @@ class UserController extends Controller {
       user.token = token;
 
       // 将token存储在redis中，并设置过期时间
-      await app.redis.setex(token, app.config.token_expire, user);
+      await app.redis.setex(token, app.config.token_expire, JSON.stringify(user));
 
       ctx.body = { success: true, data: user };
     } else {

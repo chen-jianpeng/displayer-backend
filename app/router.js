@@ -16,7 +16,10 @@ module.exports = app => {
   const { controller } = app;
 
   apiV1Router.get('/', controller.home.index);
-  apiV1Router.get('/signin', controller.user.signin);
+  apiV1Router.post('/signin', controller.user.signin);
   apiV1Router.post('/signup', controller.user.signup);
   apiV1Router.get('/testlogin', tokenRequired, controller.user.needLogin);
+
+  apiV1Router.get('/project', tokenRequired, controller.project.index);
+  apiV1Router.post('/project', tokenRequired, controller.project.create);
 };
